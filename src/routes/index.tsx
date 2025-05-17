@@ -12,7 +12,7 @@ function Index() {
   return (
     <div className="p-2 text-2xl">
       <MotionButton
-        whileHover={{ backgroundColor: "red" }}
+        whileHover={{ backgroundColor: "blue" }}
         className="cursor-pointer"
       >
         Click
