@@ -1,6 +1,24 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@import "tailwindcss";
+@theme {
+  --color-*: initial;
+  --color-white: #fff;
+  --color-night-1: #15173a;
+  --color-night-2: #191c4c;
+  --color-night-3: #2f2c56;
+  --color-night-4: #2e4573;
+  --color-night-5: #305a70;
+  --color-night-yellow: #ebbc35;
+  --color-day-1: #051c41;
+  --color-day-2: #163e75;
+  --color-day-3: #305693;
+  --color-day-4: #498ed6;
+  --color-day-5: #52b1fe;
+  --color-day-yellow: #f5ca49;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
