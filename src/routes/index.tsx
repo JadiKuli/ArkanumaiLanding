@@ -11,7 +11,6 @@ function Index() {
 
   return (
     <div className="p-2 text-2xl">
-      <h3>Welcome Home!</h3>
       <MotionButton
         whileHover={{ backgroundColor: "red" }}
         className="cursor-pointer"
