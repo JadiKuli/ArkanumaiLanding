@@ -27,6 +27,7 @@ function City2({
         transition={{
           duration: 10,
           ease: "linear",
+          delay: 8,
           repeat: Infinity,
           repeatType: "mirror",
         }}

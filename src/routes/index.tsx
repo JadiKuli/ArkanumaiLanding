@@ -48,18 +48,18 @@ function Index() {
         </div>
       </motion.div>
       <div className="absolute bottom-0 left-1/2 w-full -translate-x-1/2">
-        <Sun className="absolute right-0 bottom-28 md:right-1/4 lg:bottom-46" />
+        <Sun className="absolute right-0 bottom-0 -translate-y-32 md:right-1/4 lg:bottom-46" />
         <City3
           theme={theme}
-          className="absolute bottom-0 left-0 w-[43.75rem] -translate-y-14 md:left-1/2 md:w-4/6 md:-translate-x-1/2 md:-translate-y-8 lg:-translate-y-20"
+          className="absolute bottom-0 left-0 w-[43.75rem] -translate-y-20 md:left-1/2 md:w-4/6 md:-translate-x-1/2 md:-translate-y-8 lg:-translate-y-20"
         />
         <City2
           theme={theme}
-          className="absolute bottom-0 left-1/2 w-[55rem] -translate-x-[68%] -translate-y-1 md:w-4/6 md:-translate-x-1/2 lg:-translate-y-20"
+          className="absolute bottom-0 left-1/2 w-[55rem] -translate-x-[68%] -translate-y-12 md:w-4/6 md:-translate-x-1/2 lg:-translate-y-20"
         />
         <City1
           theme={theme}
-          className="absolute bottom-0 left-1/2 w-[37.5rem] -translate-x-1/2 -translate-y-9 md:w-4/6 lg:-translate-y-19"
+          className="absolute bottom-0 left-1/2 w-[37.5rem] -translate-x-1/2 -translate-y-[3.5rem] md:w-4/6 lg:-translate-y-19"
         />
         <Ground theme={theme} className="relative z-50" />
       </div>

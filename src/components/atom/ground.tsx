@@ -12,7 +12,7 @@ function Ground({
       animate={{ translateY: 0 }}
       transition={{ duration: 2 }}
       initial={{ translateY: 500 }}
-      className={`h-10 w-full lg:h-20 ${className} ${theme === "dark" ? "bg-night-1" : "bg-day-1"}`}
+      className={`h-16 w-full lg:h-20 ${className} ${theme === "dark" ? "bg-night-1" : "bg-day-1"}`}
     />
   );
 }
