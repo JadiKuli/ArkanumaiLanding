@@ -31,10 +31,10 @@ function Index() {
           </Label>
         </div>
       </div>
-      <motion.div className="w-full absolute left-1/2 -translate-x-1/2 bottom-0">
+      <motion.div className="w-full flex flex-col items-center absolute left-1/2 -translate-x-1/2 bottom-0">
         <City1
           theme={theme}
-          className="w-full h-full relative object-contain object-center translate-y-1 -z-10"
+          className="w-[200%] lg:w-3/4 h-full relative object-contain object-center translate-y-1 -z-10"
         />
         <div
           className={`w-full h-10 ${theme === "dark" ? "bg-night-1" : "bg-day-1"}`}

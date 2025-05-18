@@ -63,7 +63,7 @@ function City1({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       animate={{ translateY: 0 }}
-      transition={{ duration: 1 }}
+      transition={{ duration: 2 }}
       initial={{ translateY: 500 }}
     >
       <path
@@ -72,130 +72,180 @@ function City1({
           theme === "dark" ? "fill-night-2 transition" : "fill-day-2 transition"
         }
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M700.886 42H696V55.0298H700.886V42Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M616.886 108H612V121.03H616.886V108Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.9, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M536.886 31H532V44.0298H536.886V31Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.8, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M536.886 48H532V61.0298H536.886V48Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.6, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M536.886 65H532V78.0298H536.886V65Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M511.886 103H507V116.03H511.886V103Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.4, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M451.886 99H447V112.03H451.886V99Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.3, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M342.886 47H338V60.0298H342.886V47Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M342.886 66H338V79.0298H342.886V66Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.1, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M271.886 79H267V92.0298H271.886V79Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M183.886 100H179V113.03H183.886V100Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.1, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M121.886 122H117V135.03H121.886V122Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M109.886 122H105V135.03H109.886V122Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.3, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M300.886 100H296V113.03H300.886V100Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.4, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M293.886 100H289V113.03H293.886V100Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M625.886 108H621V121.03H625.886V108Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.6, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M709.886 42H705V55.0298H709.886V42Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.7, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M709.886 23H705V36.0298H709.886V23Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.8, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M791.886 80H787V93.0298H791.886V80Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.9, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M783.886 80H779V93.0298H783.886V80Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M897.886 38H893V51.0298H897.886V38Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.9, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M907.886 38H903V51.0298H907.886V38Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.8, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M987.886 80H983V93.0298H987.886V80Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.7, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M996.886 80H992V93.0298H996.886V80Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.6, repeat: Infinity, repeatType: "reverse" }}
       />
-      <path
+      <motion.path
         opacity="0.5"
         d="M887.886 38H883V51.0298H887.886V38Z"
         className="fill-night-yellow"
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
       />
       <path
         d="M739.515 174.516C739.515 174.819 738.057 175.063 736.258 175.063C734.458 175.063 733 174.818 733 174.516C733 174.214 734.458 173.969 736.258 173.969C738.057 173.969 739.515 174.214 739.515 174.516Z"
