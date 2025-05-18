@@ -32,7 +32,7 @@ function City1({
             children[parseInt(key)].setAttribute("class", newFill);
           }
         },
-        parseInt(key) * 100
+        parseInt(key) * 100,
       );
     });
   }
@@ -48,15 +48,13 @@ function City1({
             children[parseInt(key)].setAttribute("class", newFill);
           }
         },
-        parseInt(key) * 100
+        parseInt(key) * 100,
       );
     });
   }
 
   return (
     <motion.svg
-      width="1074"
-      height="178"
       viewBox="0 0 1074 178"
       ref={ref}
       className={className}

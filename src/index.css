@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Tourney:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -17,6 +18,10 @@
   --color-day-4: #498ed6;
   --color-day-5: #52b1fe;
   --color-day-yellow: #f5ca49;
+  --color-orange: #ff2900;
+
+  --font-tourney: "Tourney", sans-serif;
+  --font-lexend: "Lexend", sans-serif;
 }
 
 @custom-variant dark (&:is(.dark *));
