@@ -11,6 +11,15 @@ import CometBackground from "@/components/atom/comet";
 import type { IconName } from "lucide-react/dynamic";
 import Icon from "@/components/atom/icon";
 import Building from "@/components/atom/building";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -24,15 +33,6 @@ interface DataIconsProps {
 
 function Index() {
   const [theme, setTheme] = useState("dark");
-
-  const DATA_ICONS: DataIconsProps[] = [
-    { label: "Folder", name: "activity" },
-    { label: "Message", name: "message-circle" },
-    { label: "File", name: "file-text" },
-    { label: "Game", name: "gamepad" },
-    { label: "Book", name: "book-image" },
-    { label: "Code", name: "code-2" },
-  ];
   const [time, setTime] = useState("");
   const [dateInfo, setDateInfo] = useState({
     day: "",
@@ -44,6 +44,14 @@ function Index() {
     country: "",
     locale: navigator.language || "en-US",
   });
+  const [showGift, setShowGift] = useState(false);
+
+  const DATA_ICONS: DataIconsProps[] = [
+    { label: "Image to Ghibli", name: "activity" },
+    { label: "Message", name: "message-circle" },
+    { label: "File", name: "file-text" },
+    { label: "Game", name: "gamepad" },
+  ];
 
   useEffect(() => {
     fetch("https://ipapi.co/json/")
@@ -88,18 +96,48 @@ function Index() {
     <div
       className={`relative h-screen w-full overflow-hidden transition duration-500 ${theme === "dark" ? "from-night-1 to-night-blue bg-gradient-to-b" : "to-day-5 from-day-white bg-gradient-to-b"} `}
     >
-      <div className="fixed top-4 right-4 z-50 flex gap-2">
+      <motion.div
+        className="relative z-[60] w-fit translate-x-4 translate-y-6 animate-bounce cursor-pointer rounded-full bg-[#FF3376] p-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1 }}
+        onClick={() => setShowGift(!showGift)}
+      >
+        <Dialog>
+          <DialogTrigger asChild>
+            <Icon name="gift" size={20} className="stroke-white" />
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <DialogDescription>
+                This action cannot be undone. This will permanently delete your
+                account and remove your data from our servers.
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      </motion.div>
+      <div className="fixed top-6 right-6 z-50 flex gap-2">
         <Switch
           id="theme"
           checked={theme === "dark"}
+          className="hidden"
           onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
         />
+        <Label htmlFor="theme">
+          <Icon
+            name={theme === "dark" ? "sun" : "moon"}
+            size={25}
+            className={`${theme === "dark" ? "stroke-white" : "stroke-day-5"}`}
+          />
+        </Label>
       </div>
       <CometBackground />
       <motion.div
-        animate={{ scale: 1 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 2 }}
-        initial={{ scale: 0 }}
+        initial={{ opacity: 0 }}
         className="absolute top-1/2 left-1/2 z-40 flex w-full -translate-x-1/2 -translate-y-2/3 flex-col gap-10 p-8 md:w-2/3 lg:w-1/2 lg:pt-16"
       >
         <div className="flex flex-col items-center gap-3 lg:gap-5">
@@ -131,7 +169,7 @@ function Index() {
             </h4>
           </div>
         </div>
-        <div className="grid grid-cols-4 justify-items-center gap-6 lg:grid-cols-5">
+        <div className="grid grid-cols-4 justify-items-center gap-6">
           {DATA_ICONS.map((item, index) => (
             <div
               key={index}
@@ -145,7 +183,7 @@ function Index() {
                   className={`stroke-day-5 drop-shadow-background size-10 stroke-[1.5] lg:stroke-white`}
                 />
               </div>
-              <p className="font-lexend text-[14px] text-white text-shadow-sm">
+              <p className="font-lexend text-center text-[14px] text-white text-shadow-sm">
                 {item.label}
               </p>
             </div>
