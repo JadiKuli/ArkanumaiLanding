@@ -27,11 +27,11 @@ function City2({
         transition={{
           duration: 10,
           ease: "linear",
-          delay: 8,
+          delay: 10,
           repeat: Infinity,
           repeatType: "mirror",
         }}
-        className={`transition ${theme === "dark" ? "fill-night-3" : "fill-day-3"}`}
+        className={`transition duration-500 ${theme === "dark" ? "fill-night-3" : "fill-day-3"}`}
       />
     </motion.svg>
   );

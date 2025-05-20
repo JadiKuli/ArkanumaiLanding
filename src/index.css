@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Tourney:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Viga&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -11,20 +11,22 @@
   --color-night-3: #2f2c56;
   --color-night-4: #2e4573;
   --color-night-5: #305a70;
+  --color-night-blue: #5cacd6;
   --color-night-yellow: #ebbc35;
   --color-day-1: #051c41;
   --color-day-2: #163e75;
   --color-day-3: #305693;
   --color-day-4: #498ed6;
   --color-day-5: #52b1fe;
+  --color-day-white: #f9ffca;
+  --color-day-blue: #b8dfe1;
   --color-day-yellow: #f5ca49;
   --color-orange: #ff2900;
 
-  --font-tourney: "Tourney", sans-serif;
+  --font-*: initial;
+  --font-viga: "Viga", sans-serif;
   --font-lexend: "Lexend", sans-serif;
 }
-
-@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
