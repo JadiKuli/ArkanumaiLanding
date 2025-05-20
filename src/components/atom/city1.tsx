@@ -61,7 +61,7 @@ function City1({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       animate={{ translateY: 0 }}
-      transition={{ duration: 2, delay: 1 }}
+      transition={{ duration: 2 }}
       initial={{ translateY: 500 }}
     >
       <path

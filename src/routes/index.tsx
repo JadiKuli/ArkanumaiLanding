@@ -86,7 +86,7 @@ function Index() {
 
   return (
     <div
-      className={`relative h-screen w-full overflow-hidden transition duration-1000 ${theme === "dark" ? "from-night-1 to-night-blue bg-gradient-to-b" : "to-day-5 from-day-white bg-gradient-to-b"} `}
+      className={`relative h-screen w-full overflow-hidden transition duration-500 ${theme === "dark" ? "from-night-1 to-night-blue bg-gradient-to-b" : "to-day-5 from-day-white bg-gradient-to-b"} `}
     >
       <div className="fixed top-4 right-4 z-50 flex gap-2">
         <Switch
@@ -98,7 +98,7 @@ function Index() {
       <CometBackground />
       <motion.div
         animate={{ scale: 1 }}
-        transition={{ duration: 1, delay: 5 }}
+        transition={{ duration: 1, delay: 2 }}
         initial={{ scale: 0 }}
         className="absolute top-1/2 left-1/2 z-40 flex w-full -translate-x-1/2 -translate-y-2/3 flex-col gap-10 p-8 md:w-2/3 lg:w-1/2 lg:pt-16"
       >
@@ -154,7 +154,7 @@ function Index() {
       </motion.div>
       <div className="absolute bottom-0 left-1/2 w-full -translate-x-1/2">
         <Sun
-          className={`absolute right-4 bottom-40 size-[8.75rem] transition duration-1000 md:right-1/4 md:size-20 lg:right-1/5 lg:bottom-64 lg:size-32 ${theme === "dark" ? "" : "translate-x-[500px] translate-y-[500px]"}`}
+          className={`absolute right-4 bottom-40 size-[8.75rem] transition duration-500 md:right-1/4 md:size-20 lg:right-1/5 lg:bottom-64 lg:size-32 ${theme === "dark" ? "" : "translate-x-[500px] translate-y-[500px]"}`}
         />
         <City3
           theme={theme}
