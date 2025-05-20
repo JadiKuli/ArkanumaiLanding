@@ -98,9 +98,9 @@ function Index() {
       <CometBackground />
       <motion.div
         animate={{ scale: 1 }}
-        transition={{ duration: 2, delay: 8 }}
+        transition={{ duration: 1, delay: 5 }}
         initial={{ scale: 0 }}
-        className="absolute top-1/2 left-1/2 z-40 flex w-full -translate-x-1/2 -translate-y-2/3 flex-col gap-10 p-8 md:w-2/3 lg:w-1/2 lg:pt-48"
+        className="absolute top-1/2 left-1/2 z-40 flex w-full -translate-x-1/2 -translate-y-2/3 flex-col gap-10 p-8 md:w-2/3 lg:w-1/2 lg:pt-16"
       >
         <div className="flex flex-col items-center gap-3 lg:gap-5">
           <h4

@@ -14,7 +14,7 @@ const Building = ({
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       animate={{ translateY: 0 }}
-      transition={{ duration: 3 }}
+      transition={{ duration: 1, delay: 1 }}
       initial={{ translateY: 500 }}
     >
       <path

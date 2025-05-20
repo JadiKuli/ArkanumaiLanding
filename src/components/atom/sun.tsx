@@ -4,7 +4,7 @@ function Sun({ className }: { className: string }) {
   return (
     <motion.div
       animate={{ translateY: 0, translateX: 0 }}
-      transition={{ duration: 2, delay: 6 }}
+      transition={{ duration: 1, delay: 3 }}
       initial={{ translateY: 500, translateX: 500 }}
       className={`bg-night-yellow drop-shadow-night-yellow rounded-full ${className}`}
     />

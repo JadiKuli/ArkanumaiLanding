@@ -8,7 +8,7 @@ const generateComets = (count = 20) => {
   return Array.from({ length: count }, (_, i) => {
     const startX = Math.random() * (w + 300) - 100; // bisa sedikit
     const startY = Math.random() * -300 - 100; // mulai di atas viewport
-    const angleOffset = w * 1.6; // sejauh 120% lebar layar
+    const angleOffset = w * 1.4; // sejauh 120% lebar layar
     return {
       id: i,
       delay: 8 + Math.random() * 6, // 8–20 detik

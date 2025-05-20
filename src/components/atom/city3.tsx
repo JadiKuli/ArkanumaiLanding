@@ -8,7 +8,7 @@ function City3({ theme, className }: { theme: string; className: string }) {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       animate={{ translateY: 0 }}
-      transition={{ duration: 2, delay: 4 }}
+      transition={{ duration: 2, delay: 3 }}
       initial={{ translateY: 500 }}
     >
       <path
