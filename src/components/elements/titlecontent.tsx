@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import "dayjs/locale/id"; // Ubah jika ingin dukungan lokal lain
+
+dayjs.extend(localizedFormat);
 
 const TitleContent = ({ theme = "dark" }: { theme: string }) => {
   const [time, setTime] = useState("");
@@ -10,19 +15,21 @@ const TitleContent = ({ theme = "dark" }: { theme: string }) => {
   const [location, setLocation] = useState({
     city: "",
     country: "",
-    locale: navigator.language || "en-US",
+    locale: "en",
   });
 
   useEffect(() => {
     fetch("https://ipapi.co/json/")
       .then((res) => res.json())
       .then((data) => {
-        const localeFromIP = `${data.languages?.split(",")[0] || "en"}-${data.country}`;
+        const localeFromIP = `${data.languages?.split(",")[0] || "en"}`;
         setLocation({
           city: data.city,
           country: data.country_name,
           locale: localeFromIP,
         });
+
+        dayjs.locale(localeFromIP); // set locale untuk dayjs
       })
       .catch((err) => {
         console.error("Gagal mendapatkan lokasi:", err);
@@ -31,22 +38,15 @@ const TitleContent = ({ theme = "dark" }: { theme: string }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const now = new Date();
-      const timeString = now.toLocaleTimeString(location.locale, {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      });
+      const now = dayjs();
 
-      const formattedDate = now.toLocaleDateString(location.locale, {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-      const [day, month, year] = formattedDate.split(" ");
+      setTime(now.format("HH:mm"));
 
-      setTime(timeString.replace(".", ":"));
-      setDateInfo({ day, month, year });
+      setDateInfo({
+        day: now.format("D"),
+        month: now.format("MMMM"),
+        year: now.format("YYYY"),
+      });
     }, 1000);
 
     return () => clearInterval(interval);
@@ -55,28 +55,38 @@ const TitleContent = ({ theme = "dark" }: { theme: string }) => {
   return (
     <div className="flex flex-col items-center gap-3 lg:gap-5">
       <h4
-        className={`font-lexend text-[40px] transition duration-1000 lg:text-5xl ${theme === "dark" ? "text-white" : "text-day-5"}`}
+        className={`font-lexend text-[40px] transition duration-1000 lg:text-5xl ${
+          theme === "dark" ? "text-white" : "text-day-5"
+        }`}
       >
         {time}
       </h4>
       <h1
-        className={`font-viga text-center text-[48px] transition duration-1000 lg:text-7xl ${theme === "dark" ? "text-white" : "text-day-5"}`}
+        className={`font-viga text-center text-[48px] transition duration-1000 lg:text-7xl ${
+          theme === "dark" ? "text-white" : "text-day-5"
+        }`}
       >
-        Example_AI
+        MYSTICAL_AI
       </h1>
       <div className="flex w-full flex-col items-center gap-2">
         <div className="flex flex-col items-center gap-2">
           <h4
-            className={`font-lexend px-2 transition duration-1000 lg:text-xl ${theme === "dark" ? "text-white" : "text-day-5"}`}
+            className={`font-lexend px-2 transition duration-1000 lg:text-xl ${
+              theme === "dark" ? "text-white" : "text-day-5"
+            }`}
           >
             {location.city}, {location.country}
           </h4>
           <div
-            className={`w-full border border-b-1 transition duration-1000 ${theme === "dark" ? "border-white" : "border-day-5"}`}
+            className={`w-full border border-b-1 transition duration-1000 ${
+              theme === "dark" ? "border-white" : "border-day-5"
+            }`}
           />
         </div>
         <h4
-          className={`font-lexend transition duration-1000 lg:text-xl ${theme === "dark" ? "text-white" : "text-day-5"}`}
+          className={`font-lexend transition duration-1000 lg:text-xl ${
+            theme === "dark" ? "text-white" : "text-day-5"
+          }`}
         >
           {dateInfo.month} {dateInfo.day}, {dateInfo.year}
         </h4>

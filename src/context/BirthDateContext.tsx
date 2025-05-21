@@ -1,5 +1,5 @@
 // src/context/BirthDateContext.tsx
-import { createContext, useContext, useState, type ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 type BirthDateContextType = {
   dateBirth: string;
@@ -10,8 +10,26 @@ const BirthDateContext = createContext<BirthDateContextType | undefined>(
   undefined,
 );
 
-export const BirthDateProvider = ({ children }: { children: ReactNode }) => {
-  const [dateBirth, setDateBirth] = useState<string>("");
+export const BirthDateProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [dateBirth, setDateBirthState] = useState<string>("");
+
+  // Ambil dari localStorage saat pertama kali load
+  useEffect(() => {
+    const savedDate = localStorage.getItem("dateBirth");
+    if (savedDate) {
+      setDateBirthState(savedDate);
+    }
+  }, []);
+
+  // Simpan ke localStorage setiap kali berubah
+  const setDateBirth = (date: string) => {
+    localStorage.setItem("dateBirth", date);
+    setDateBirthState(date);
+  };
 
   return (
     <BirthDateContext.Provider value={{ dateBirth, setDateBirth }}>

@@ -57,7 +57,7 @@ function Index() {
         </Label>
       </div>
       {showDateCard && (
-        <div className="fixed inset-0 z-[9999] flex h-full w-full items-center justify-center backdrop-blur-sm">
+        <div className="fixed inset-0 z-[60] flex h-full w-full items-center justify-center backdrop-blur-sm">
           <DateCard handleSetDateBirth={handlesetDateBirth} />
         </div>
       )}

@@ -9,23 +9,24 @@ import {
 } from "@/components/ui/card";
 import { DatePicker } from "./datepicker";
 import { useState } from "react";
-import { parseDate } from "@/utils/parseDateCalender";
+import type { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 
 export default function DateCard({
   handleSetDateBirth,
 }: {
   handleSetDateBirth: (date: string) => void;
 }) {
-  const [date, setDate] = useState<Date>();
+  const currentDate = new Date();
+  const [date, setDate] = useState<Dayjs>(dayjs(currentDate));
 
-  const handleDate = (date: Date) => {
+  const handleDate = (date: Dayjs) => {
     setDate(date);
   };
 
   const onSubmit = () => {
     if (!date) return;
-    const parse = parseDate(date.toString());
-
+    const parse = date.toISOString().split("T")[0];
     handleSetDateBirth(parse);
   };
 
