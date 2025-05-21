@@ -83,7 +83,7 @@ function Index() {
 
       setTime(timeString.replace(".", ":"));
       setDateInfo({ day, month, year });
-    }, 1000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [location.locale]);
