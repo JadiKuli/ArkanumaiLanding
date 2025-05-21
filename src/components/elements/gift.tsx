@@ -87,7 +87,7 @@ const Gift = ({ birthDate = "2002-05-22" }: { birthDate: string }) => {
       className="relative z-[60] w-fit translate-x-4 translate-y-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1, delay: 1 }}
+      transition={{ duration: 1 }}
     >
       <Dialog>
         <DialogTrigger asChild>
