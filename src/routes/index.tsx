@@ -12,14 +12,8 @@ import type { IconName } from "lucide-react/dynamic";
 import Icon from "@/components/atom/icon";
 import Building from "@/components/atom/building";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import Gift from "@/components/elements/gift";
+import DateCard from "@/components/elements/datecard";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -44,7 +38,9 @@ function Index() {
     country: "",
     locale: navigator.language || "en-US",
   });
+  const [dateBirth, setDateBirth] = useState<string>("");
   const [showGift, setShowGift] = useState(false);
+  const [showDateCard, setShowDateCard] = useState(false);
 
   const DATA_ICONS: DataIconsProps[] = [
     { label: "Image to Ghibli", name: "activity" },
@@ -92,32 +88,23 @@ function Index() {
     return () => clearInterval(interval);
   }, [location.locale]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShowDateCard(true);
+    }, 3500);
+  }, []);
+
+  const handlesetDateBirth = (date: string) => {
+    setDateBirth(date);
+    setShowGift(true);
+    setShowDateCard(false);
+  };
+
   return (
     <div
       className={`relative h-screen w-full overflow-hidden transition duration-500 ${theme === "dark" ? "from-night-1 to-night-blue bg-gradient-to-b" : "to-day-5 from-day-white bg-gradient-to-b"} `}
     >
-      <motion.div
-        className="relative z-[60] w-fit translate-x-4 translate-y-6 animate-bounce cursor-pointer rounded-full bg-[#FF3376] p-2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1 }}
-        onClick={() => setShowGift(!showGift)}
-      >
-        <Dialog>
-          <DialogTrigger asChild>
-            <Icon name="gift" size={20} className="stroke-white" />
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
-      </motion.div>
+      {showGift && dateBirth && <Gift birthDate={dateBirth} />}
       <div className="fixed top-6 right-6 z-50 flex gap-2">
         <Switch
           id="theme"
@@ -133,6 +120,11 @@ function Index() {
           />
         </Label>
       </div>
+      {showDateCard && (
+        <div className="fixed inset-0 z-[9999] flex h-full w-full items-center justify-center backdrop-blur-sm">
+          <DateCard handleSetDateBirth={handlesetDateBirth} />
+        </div>
+      )}
       <CometBackground />
       <motion.div
         animate={{ opacity: 1 }}
