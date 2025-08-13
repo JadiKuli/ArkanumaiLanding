@@ -11,6 +11,9 @@ import TitleContent from "@/components/elements/titlecontent";
 import MainContent from "@/components/elements/maincontent";
 import Background from "@/components/elements/background";
 import { useBirthDate } from "@/context/BirthDateContext";
+import { IoMdLogIn } from "react-icons/io";
+import LoginCard from "@/components/elements/logincard";
+import { userService } from "@/services/api/user-service";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -21,14 +24,9 @@ function Index() {
   const { dateBirth, setDateBirth } = useBirthDate();
   const [showGift, setShowGift] = useState(false);
   const [showDateCard, setShowDateCard] = useState(false);
-
-  useEffect(() => {
-    if (!dateBirth) {
-      setTimeout(() => setShowDateCard(true), 3500);
-    } else {
-      setShowGift(true);
-    }
-  }, []);
+  const [isLogin, setIsLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [data, setData] = useState<{ username: string }>();
 
   const handlesetDateBirth = (date: string) => {
     setDateBirth(date);
@@ -36,12 +34,31 @@ function Index() {
     setShowDateCard(false);
   };
 
+  useEffect(() => {
+    const userCheck = async () => {
+      try {
+        const res = await userService.me();
+        console.log(res);
+
+        if (res.data) {
+          setIsLogin(true);
+          setData(res.data);
+        }
+      } catch (error) {
+        setIsLogin(false);
+        console.error(error);
+      }
+    };
+
+    userCheck();
+  }, []);
+
   return (
     <div
       className={`relative h-screen w-full overflow-hidden transition duration-500 ${theme === "dark" ? "from-night-1 to-night-blue bg-gradient-to-b" : "to-day-5 from-day-white bg-gradient-to-b"} `}
     >
       {showGift && dateBirth && <Gift birthDate={dateBirth} />}
-      <div className="fixed top-6 right-6 z-50 flex gap-2">
+      <div className="fixed top-6 left-6 z-50 flex gap-2">
         <Switch
           id="theme"
           checked={theme === "dark"}
@@ -56,9 +73,29 @@ function Index() {
           />
         </Label>
       </div>
+      {isLogin ? (
+        <div>
+          <div className="hover:text-night-1 fixed top-6 right-6 z-50 flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 font-semibold text-white transition duration-300 hover:bg-white">
+            Hi! {data?.username}
+          </div>
+        </div>
+      ) : (
+        <div
+          className="hover:text-night-1 fixed top-6 right-6 z-50 flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 font-semibold text-white transition duration-300 hover:bg-white"
+          onClick={() => setShowLogin(true)}
+        >
+          <IoMdLogIn size={24} />
+          Login User
+        </div>
+      )}
       {showDateCard && (
         <div className="fixed inset-0 z-[60] flex h-full w-full items-center justify-center backdrop-blur-sm">
           <DateCard handleSetDateBirth={handlesetDateBirth} />
+        </div>
+      )}
+      {showLogin && (
+        <div className="fixed inset-0 z-[60] flex h-full w-full items-center justify-center backdrop-blur-sm">
+          <LoginCard onClose={() => setShowLogin(false)} />
         </div>
       )}
       <CometBackground />

@@ -1,6 +1,5 @@
 import type { IconName } from "lucide-react/dynamic";
 import Icon from "../atom/icon";
-import { useNavigate } from "@tanstack/react-router";
 
 interface DataIconsProps {
   label: string;
@@ -9,26 +8,34 @@ interface DataIconsProps {
 }
 
 const MainContent = () => {
-  const navigate = useNavigate({ from: "/" });
-
   const DATA_ICONS: DataIconsProps[] = [
-    { label: "Image to Ghibli", name: "image" },
-    { label: "Image to Disney", name: "castle" },
-    { label: "Image to Anime", name: "japanese-yen" },
-    { label: "Image to Cyberpunk", name: "circuit-board" },
+    {
+      label: "3D Generate",
+      name: "image",
+      onClick: () =>
+        (window.location.href = "https://arcanumai-client.vercel.app/ai"),
+    },
+    {
+      label: "Music Generate",
+      name: "music",
+      onClick: () =>
+        (window.location.href = "https://arcanumai-client.vercel.app/ai"),
+    },
+    {
+      label: "Social Media",
+      name: "handshake",
+      onClick: () =>
+        (window.location.href = "https://arcanumai-client.vercel.app/social"),
+    },
   ];
 
-  const handleClick = () => {
-    navigate({ to: "/coming-soon" });
-  };
-
   return (
-    <div className="grid grid-cols-4 justify-items-center gap-6">
+    <div className="grid grid-cols-3 justify-items-center gap-6">
       {DATA_ICONS.map((item, index) => (
         <div
           key={index}
           className="flex cursor-pointer flex-col items-center gap-1 text-white"
-          onClick={handleClick}
+          onClick={item.onClick}
         >
           <div
             className={`flex size-16 items-center justify-center rounded-[10px] border-t-[1px] border-white bg-white/10 shadow-md backdrop-blur-lg`}

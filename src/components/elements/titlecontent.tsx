@@ -66,7 +66,7 @@ const TitleContent = ({ theme = "dark" }: { theme: string }) => {
           theme === "dark" ? "text-white" : "text-day-5"
         }`}
       >
-        MYSTICAL_AI
+        ARCANUM AI
       </h1>
       <div className="flex w-full flex-col items-center gap-2">
         <div className="flex flex-col items-center gap-2">
