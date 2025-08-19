@@ -10,22 +10,23 @@ import {
 import Input from "../ui/input";
 import { useState } from "react";
 import { authService } from "@/services/api/auth-service";
-import { LoginSchema, type LoginType } from "@/validation/login";
-import { toast } from "sonner";
+import { RegisterSchema, type RegisterType } from "@/validation/register";
 import z from "zod";
+import { toast } from "sonner";
 
 interface Props {
   onClose?: () => void;
-  onRegister?: () => void;
+  onLogin?: () => void;
 }
 
-export default function LoginCard(props: Props) {
+export default function RegisterCard(props: Props) {
   const [data, setData] = useState({
     username: "",
     password: "",
+    repeatPassword: "",
   });
   const [errors, setErrors] = useState<
-    Partial<Record<keyof LoginType, string>>
+    Partial<Record<keyof RegisterType, string>>
   >({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,22 +37,24 @@ export default function LoginCard(props: Props) {
     e.preventDefault();
 
     try {
-      LoginSchema.parse(data);
-      toast.info("Logging in...");
+      RegisterSchema.parse(data);
+      toast.info("Registering User...");
 
-      await authService.login(data.username, data.password);
-      window.location.reload();
+      await authService.register(data.username, data.password);
+      toast.success("User Registered Successfully!, Please Login.");
+      if (props.onLogin) {
+        props.onLogin();
+      }
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const errors: Partial<Record<keyof LoginType, string>> = {};
+        const errors: Partial<Record<keyof RegisterType, string>> = {};
         error.issues.forEach((issue) => {
-          errors[issue.path[0] as keyof LoginType] = issue.message;
+          errors[issue.path[0] as keyof RegisterType] = issue.message;
         });
         setErrors(errors);
       } else {
-        toast.error("Invalid credentials!, Please try again.");
+        toast.error("Something went wrong!, Please try again.");
       }
-
       console.error(error);
     }
   };
@@ -59,26 +62,27 @@ export default function LoginCard(props: Props) {
   return (
     <Card className="w-[350px]">
       <CardHeader>
-        <CardTitle className="text-night-3 text-center">Login Area</CardTitle>
+        <CardTitle className="text-night-3 text-center">
+          Register Area
+        </CardTitle>
         <CardDescription className="text-night-3 text-center">
           Input your username and password
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div
-          className={`text-pink space-y-1 text-sm ${
-            errors.username || errors.password ? "block" : "hidden"
-          }`}
+          className={`text-pink space-y-1 text-sm ${errors.username || errors.password || errors.repeatPassword ? "block" : "hidden"}`}
         >
           {errors.username && <p>Username must be at least 3 characters</p>}
           {errors.password && <p>Password must be at least 6 characters</p>}
+          {errors.repeatPassword && <p>Passwords do not match</p>}
         </div>
-
         <Input
           label="username"
           name="username"
           placeholder="Username"
           onChange={handleChange}
+          required
         />
         <Input
           label="password"
@@ -86,15 +90,24 @@ export default function LoginCard(props: Props) {
           placeholder="Password"
           type="password"
           onChange={handleChange}
+          required
+        />
+        <Input
+          label="repeat password"
+          name="repeatPassword"
+          placeholder="Repeat Password"
+          type="password"
+          onChange={handleChange}
+          required
         />
       </CardContent>
       <CardContent className="text-night-3 text-sm">
-        Don't have an account?{" "}
+        Already have an account?{" "}
         <span
           className="text-night-3 text-pink cursor-pointer font-semibold"
-          onClick={props.onRegister}
+          onClick={props.onLogin}
         >
-          Register Now!
+          Login Now!
         </span>
       </CardContent>
       <CardFooter className="flex flex-col gap-2">
@@ -102,7 +115,7 @@ export default function LoginCard(props: Props) {
           className="bg-night-3 w-full cursor-pointer"
           onClick={handleLogin}
         >
-          Login
+          Register
         </Button>
         <Button
           className="bg-pink hover:bg-pink/50 w-full cursor-pointer transition duration-300"

@@ -13,13 +13,14 @@ const MainContent = () => {
       label: "3D Generate",
       name: "image",
       onClick: () =>
-        (window.location.href = "https://arcanumai-client.vercel.app/ai"),
+        (window.location.href = "https://arcanumai-client.vercel.app/ai?id=3d"),
     },
     {
       label: "Music Generate",
       name: "music",
       onClick: () =>
-        (window.location.href = "https://arcanumai-client.vercel.app/ai"),
+        (window.location.href =
+          "https://arcanumai-client.vercel.app/ai?id=music"),
     },
     {
       label: "Social Media",

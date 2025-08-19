@@ -14,6 +14,9 @@ import { useBirthDate } from "@/context/BirthDateContext";
 import { IoMdLogIn } from "react-icons/io";
 import LoginCard from "@/components/elements/logincard";
 import { userService } from "@/services/api/user-service";
+import RegisterCard from "@/components/elements/registercard";
+import { authService } from "@/services/api/auth-service";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -25,7 +28,7 @@ function Index() {
   const [showGift, setShowGift] = useState(false);
   const [showDateCard, setShowDateCard] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState<string | null>();
   const [data, setData] = useState<{ username: string }>();
 
   const handlesetDateBirth = (date: string) => {
@@ -74,15 +77,26 @@ function Index() {
         </Label>
       </div>
       {isLogin ? (
-        <div>
-          <div className="hover:text-night-1 fixed top-6 right-6 z-50 flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 font-semibold text-white transition duration-300 hover:bg-white">
-            Hi! {data?.username}
+        <div className="fixed top-6 right-6 z-50">
+          <div className="group hover:text-night-1 hover:bg-pink hover:border-pink flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 text-center font-semibold text-white transition duration-300 hover:text-white">
+            <span className="group-hover:invisible">Hi! {data?.username}</span>
+            <span
+              className="invisible absolute group-hover:visible"
+              onClick={() => {
+                authService.logout();
+
+                toast.success("Logout Successfully!");
+                setTimeout(() => window.location.reload(), 1000);
+              }}
+            >
+              Logout
+            </span>
           </div>
         </div>
       ) : (
         <div
           className="hover:text-night-1 fixed top-6 right-6 z-50 flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 font-semibold text-white transition duration-300 hover:bg-white"
-          onClick={() => setShowLogin(true)}
+          onClick={() => setShowLogin("login")}
         >
           <IoMdLogIn size={24} />
           Login User
@@ -95,7 +109,17 @@ function Index() {
       )}
       {showLogin && (
         <div className="fixed inset-0 z-[60] flex h-full w-full items-center justify-center backdrop-blur-sm">
-          <LoginCard onClose={() => setShowLogin(false)} />
+          {showLogin === "login" ? (
+            <LoginCard
+              onClose={() => setShowLogin(null)}
+              onRegister={() => setShowLogin("register")}
+            />
+          ) : (
+            <RegisterCard
+              onClose={() => setShowLogin(null)}
+              onLogin={() => setShowLogin("login")}
+            />
+          )}
         </div>
       )}
       <CometBackground />
