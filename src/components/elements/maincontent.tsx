@@ -10,23 +10,25 @@ interface DataIconsProps {
 const MainContent = () => {
   const DATA_ICONS: DataIconsProps[] = [
     {
-      label: "3D Generate",
-      name: "image",
-      onClick: () =>
-        (window.location.href = "https://arcanumai-client.vercel.app/ai?id=3d"),
-    },
-    {
       label: "Music Generate",
       name: "music",
       onClick: () =>
         (window.location.href =
-          "https://arcanumai-client.vercel.app/ai?id=music"),
+          "https://app.arcanumai.kuncipintu.my.id/ai?id=music"),
+    },
+    {
+      label: "3D Generate",
+      name: "image",
+      onClick: () =>
+        (window.location.href =
+          "https://app.arcanumai.kuncipintu.my.id/ai?id=3d"),
     },
     {
       label: "Social Media",
       name: "handshake",
       onClick: () =>
-        (window.location.href = "https://arcanumai-client.vercel.app/social"),
+        (window.location.href =
+          "https://app.arcanumai.kuncipintu.my.id/social"),
     },
   ];
 

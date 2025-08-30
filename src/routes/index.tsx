@@ -15,8 +15,9 @@ import { IoMdLogIn } from "react-icons/io";
 import LoginCard from "@/components/elements/logincard";
 import { userService } from "@/services/api/user-service";
 import RegisterCard from "@/components/elements/registercard";
-import { authService } from "@/services/api/auth-service";
 import { toast } from "sonner";
+import ProfileCard from "@/components/elements/profilecard";
+import { authService } from "@/services/api/auth-service";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -29,7 +30,19 @@ function Index() {
   const [showDateCard, setShowDateCard] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [showLogin, setShowLogin] = useState<string | null>();
-  const [data, setData] = useState<{ username: string }>();
+  const [data, setData] = useState<{
+    username: string;
+    UserWallet: {
+      coins: number;
+      walletId: string;
+    };
+    _count: {
+      Post: number;
+      Likes: number;
+      Comment: number;
+    };
+  }>();
+  const [isProfile, setIsProfile] = useState(false);
 
   const handlesetDateBirth = (date: string) => {
     setDateBirth(date);
@@ -37,11 +50,13 @@ function Index() {
     setShowDateCard(false);
   };
 
+  const params = new URLSearchParams(window.location.search);
+  const isRequiredLogin = params.get("login");
+
   useEffect(() => {
     const userCheck = async () => {
       try {
         const res = await userService.me();
-        console.log(res);
 
         if (res.data) {
           setIsLogin(true);
@@ -55,6 +70,13 @@ function Index() {
 
     userCheck();
   }, []);
+
+  useEffect(() => {
+    if (isRequiredLogin) {
+      toast.error("Please login to access this page.");
+      setShowLogin("login");
+    }
+  }, [isRequiredLogin]);
 
   return (
     <div
@@ -77,19 +99,14 @@ function Index() {
         </Label>
       </div>
       {isLogin ? (
-        <div className="fixed top-6 right-6 z-50">
-          <div className="group hover:text-night-1 hover:bg-pink hover:border-pink flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 text-center font-semibold text-white transition duration-300 hover:text-white">
+        <div
+          className="fixed top-6 right-6 z-50"
+          onClick={() => setIsProfile(!isProfile)}
+        >
+          <div className="group hover:text-night-1 hover:bg-night-blue hover:border-night-blue flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 text-center font-semibold text-white transition duration-300 hover:text-white">
             <span className="group-hover:invisible">Hi! {data?.username}</span>
-            <span
-              className="invisible absolute group-hover:visible"
-              onClick={() => {
-                authService.logout();
-
-                toast.success("Logout Successfully!");
-                setTimeout(() => window.location.reload(), 1000);
-              }}
-            >
-              Logout
+            <span className="invisible absolute group-hover:visible">
+              Profile
             </span>
           </div>
         </div>
@@ -120,6 +137,21 @@ function Index() {
               onLogin={() => setShowLogin("login")}
             />
           )}
+        </div>
+      )}
+      {isProfile && (
+        <div className="absolute top-20 right-4 z-[60] flex h-[525px] w-92 items-center justify-center rounded-lg border border-[1px] border-slate-200 backdrop-blur-sm">
+          <ProfileCard
+            onLogout={() => {
+              authService.logout();
+
+              toast.success("Logout Successfully!");
+              setTimeout(() => {
+                window.location.href = "/";
+              }, 1500);
+            }}
+            data={data}
+          />
         </div>
       )}
       <CometBackground />

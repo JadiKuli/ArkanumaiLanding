@@ -40,7 +40,7 @@ export default function LoginCard(props: Props) {
       toast.info("Logging in...");
 
       await authService.login(data.username, data.password);
-      window.location.reload();
+      window.location.href = "/";
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errors: Partial<Record<keyof LoginType, string>> = {};
