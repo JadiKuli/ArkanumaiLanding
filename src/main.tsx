@@ -5,6 +5,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 import { BirthDateProvider } from "./context/BirthDateContext";
+import ContextProvider from "../src/context/Wagmi";
 
 // Create a new router instance
 const router = createRouter({
@@ -25,7 +26,9 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <BirthDateProvider>
-        <RouterProvider router={router} />
+        <ContextProvider>
+          <RouterProvider router={router} />
+        </ContextProvider>
       </BirthDateProvider>
     </StrictMode>,
   );

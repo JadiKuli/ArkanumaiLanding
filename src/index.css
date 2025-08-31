@@ -6,7 +6,6 @@
 
 @custom-variant dark (&:is(.dark *));
 @theme {
-  --color-*: initial;
   --color-white: #fff;
   --color-night-1: #15173a;
   --color-night-2: #191c4c;
@@ -69,16 +68,16 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --animate-meteor: meteor 5s linear infinite;
   @keyframes meteor {
-  0% {
-    transform: rotate(var(--angle)) translateX(0);
-    opacity: 1;
+    0% {
+      transform: rotate(var(--angle)) translateX(0);
+      opacity: 1;
     }
-  70% {
-    opacity: 1;
+    70% {
+      opacity: 1;
     }
-  100% {
-    transform: rotate(var(--angle)) translateX(-500px);
-    opacity: 0;
+    100% {
+      transform: rotate(var(--angle)) translateX(-500px);
+      opacity: 0;
     }
   }
 }
@@ -153,10 +152,21 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.appkit-modal {
+  z-index: 99999 !important;
+}
+
+.w3m-modal {
+  z-index: 9999 !important;
+}
+
+.w3m-overlay,
+.w3m-modal,
+.w3m-modal-container {
+  z-index: 9999 !important;
 }

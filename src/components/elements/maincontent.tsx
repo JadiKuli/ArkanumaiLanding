@@ -1,5 +1,6 @@
 import type { IconName } from "lucide-react/dynamic";
 import Icon from "../atom/icon";
+import { useNavigate } from "@tanstack/react-router";
 
 interface DataIconsProps {
   label: string;
@@ -8,6 +9,7 @@ interface DataIconsProps {
 }
 
 const MainContent = () => {
+  const navigate = useNavigate();
   const DATA_ICONS: DataIconsProps[] = [
     {
       label: "Music Generate",
@@ -30,10 +32,45 @@ const MainContent = () => {
         (window.location.href =
           "https://app.arcanumai.kuncipintu.my.id/social"),
     },
+    {
+      label: "Message",
+      name: "message-circle",
+      onClick: () => {
+        navigate({ to: "/coming-soon" });
+      },
+    },
+    {
+      label: "Reels",
+      name: "video",
+      onClick: () => {
+        navigate({ to: "/coming-soon" });
+      },
+    },
+    {
+      label: "Live",
+      name: "tv",
+      onClick: () => {
+        navigate({ to: "/coming-soon" });
+      },
+    },
+    {
+      label: "Trade",
+      name: "dollar-sign",
+      onClick: () => {
+        navigate({ to: "/coming-soon" });
+      },
+    },
+    {
+      label: "Market",
+      name: "layout",
+      onClick: () => {
+        navigate({ to: "/coming-soon" });
+      },
+    },
   ];
 
   return (
-    <div className="grid grid-cols-3 justify-items-center gap-6">
+    <div className="grid grid-cols-3 md:grid-cols-4 justify-items-center gap-6">
       {DATA_ICONS.map((item, index) => (
         <div
           key={index}
