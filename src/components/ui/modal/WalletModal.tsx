@@ -20,7 +20,15 @@ const wallets: WalletOption[] = [
 ];
 
 export default function WalletModal({ onClose }: { onClose: () => void }) {
-  const { setWallet, wallet, connect, ModalOpen } = useWallet();
+  const {
+    setWallet,
+    wallet,
+    connect,
+    ModalOpen,
+    isConnected,
+    disconnect,
+    connected,
+  } = useWallet();
   const [pendingClose, setPendingClose] = useState(false);
 
   useEffect(() => {
@@ -35,25 +43,9 @@ export default function WalletModal({ onClose }: { onClose: () => void }) {
     setPendingClose(true);
   };
 
-  console.log("ModalOpen: ",ModalOpen);
-
-  return (
-    <Modal
-      onClose={() => {
-        if (!ModalOpen) onClose();
-      }}
-    >
-      <div className="relative w-[360px] rounded-xl bg-[#121212] p-6 text-white">
-        <button
-          className="absolute top-4 right-4 text-gray-400 hover:text-white"
-          onClick={() => {
-            if (!ModalOpen) onClose();
-          }}
-          disabled={ModalOpen}
-        >
-          <X size={20} />
-        </button>
-
+  const OptionWallet = () => {
+    return (
+      <>
         <h2 className="mb-6 text-center text-lg font-semibold">
           Choose a Wallet
         </h2>
@@ -99,6 +91,69 @@ export default function WalletModal({ onClose }: { onClose: () => void }) {
         >
           Continue
         </button>
+      </>
+    );
+  };
+
+  const WalletConnected = () => {
+    return (
+      <>
+        <h2 className="mb-6 text-center text-lg font-semibold">
+          Wallet Connected
+        </h2>
+        {isConnected && (
+          <div className="flex flex-col items-center">
+            <img src="/icon/walletconnect.png" alt="" className="h-24 w-24" />
+            <p className="mt-2 text-sm font-semibold">
+              Connected with WalletConnect
+            </p>
+          </div>
+        )}
+        {connected && (
+          <div className="flex flex-col items-center">
+            <img src="/icon/metamask.png" alt="" className="h-24 w-24" />
+            <p className="mt-2 text-sm font-semibold">
+              Connected with Metamask
+            </p>
+          </div>
+        )}
+        <button
+          className="mt-6 w-full rounded-full bg-pink-600 py-3 hover:opacity-90 disabled:opacity-60"
+          onClick={() => {
+            if (isConnected) {
+              console.log("Halo")
+              setWallet("walletconnect");
+            } else {
+              setWallet("metamask");
+            }
+            disconnect();
+          }}
+          disabled={ModalOpen}
+        >
+          Disconnect
+        </button>
+      </>
+    );
+  };
+
+  return (
+    <Modal
+      onClose={() => {
+        if (!ModalOpen) onClose();
+      }}
+    >
+      <div className="relative w-[360px] rounded-xl bg-[#121212] p-6 text-white">
+        <button
+          className="absolute top-4 right-4 text-gray-400 hover:text-white"
+          onClick={() => {
+            if (!ModalOpen) onClose();
+          }}
+          disabled={ModalOpen}
+        >
+          <X size={20} />
+        </button>
+
+        {isConnected || connected ? <WalletConnected /> : <OptionWallet />}
       </div>
     </Modal>
   );

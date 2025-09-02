@@ -1,23 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSDK } from "@metamask/sdk-react";
 import {
   useAppKit,
   useAppKitAccount,
   useAppKitState,
+  useDisconnect,
 } from "@reown/appkit/react";
 import { userService } from "@/services/api/user-service";
 
 export function useWallet() {
-  const [wallet, setWallet] = useState<string>("metamask");
+  const [wallet, setWallet] = useState<string>("");
   const { open } = useAppKit();
-  const { address } = useAppKitAccount();
-  const { sdk, account, connected } = useSDK();
+  const { address, isConnected, status } = useAppKitAccount();
+  const { disconnect: WagmiDisconnect } = useDisconnect();
+  const { sdk, connected } = useSDK();
   const { open: ModalOpen, initialized: ModalInitialized } = useAppKitState();
 
   const connect = async () => {
     if (wallet === "metamask") {
       try {
-        await sdk?.connect();
+        const res = await sdk?.connect();
+        if (res?.[0]) {
+          userService
+            .updateWallet({ walletId: res[0] })
+            .then(() => {
+              window.location.reload();
+            })
+            .catch((err) => {
+              console.error("❌ Failed to update wallet:", err);
+            });
+        }
       } catch (err) {
         console.warn(`No accounts found`, err);
       }
@@ -26,6 +38,20 @@ export function useWallet() {
     if (wallet === "walletconnect") {
       try {
         open({ view: "Connect" });
+
+        console.log("address ", address);
+        console.log("is connect ", isConnected);
+        console.log("is connected status", status);
+        if (address) {
+          userService
+            .updateWallet({ walletId: address })
+            .then(() => {
+              window.location.reload();
+            })
+            .catch((err) => {
+              console.error("❌ Failed to update wallet:", err);
+            });
+        }
       } catch (error) {
         console.error("WalletConnect connection failed:", error);
       }
@@ -33,42 +59,23 @@ export function useWallet() {
   };
 
   const disconnect = async () => {
-    if (wallet === "metamask") {
-      sdk?.terminate();
-    }
-
-    if (wallet === "walletconnect") {
-      // Add WalletConnect disconnection logic here if needed
+    try {
+      if (wallet === "walletconnect") {
+        WagmiDisconnect().then(() => {
+          window.location.reload();
+        });
+      } else if (wallet === "metamask") {
+        sdk?.terminate().then(() => {
+          window.location.reload();
+        });
+      } else return;
+    } catch (error) {
+      console.error("WalletConnect disconnection failed:", error);
+    } finally {
+      localStorage.removeItem("address");
+      await userService.updateWallet({ walletId: "default" });
     }
   };
-
-  useEffect(() => {
-    if (!account) return;
-
-    const updateUserWallet = async () => {
-      try {
-        await userService.updateWallet({ walletId: account });
-      } catch (err) {
-        console.error("❌ Failed to update wallet:", err);
-      }
-    };
-
-    updateUserWallet();
-  }, [account]);
-
-  useEffect(() => {
-    if (!address) return;
-
-    const updateUserWallet = async () => {
-      try {
-        await userService.updateWallet({ walletId: address });
-      } catch (err) {
-        console.error("❌ Failed to update wallet:", err);
-      }
-    };
-
-    updateUserWallet();
-  }, [address]);
 
   return {
     wallet,
@@ -78,6 +85,7 @@ export function useWallet() {
     connect,
     disconnect,
     connected,
+    isConnected,
   };
 }
 

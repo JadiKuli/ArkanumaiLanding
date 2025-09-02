@@ -17,7 +17,7 @@ const projectId =
 const metadata = {
   name: "AppKit",
   description: "AppKit Example",
-  url: "http://localdev.com:5173",
+  url: "https://arcanumai.kuncipintu.my.id",
   icons: ["https://avatars.githubusercontent.com/u/179229932"],
 };
 

@@ -28,7 +28,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             className={cn(
-              "w-full rounded-lg border bg-gray-100 px-2 py-3.5 outline-none",
+              "w-full rounded-lg bg-gray-100 px-2 py-3.5 outline-none",
               leftIcon && "pl-11",
               error && "border-red-500",
               className,

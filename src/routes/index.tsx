@@ -20,7 +20,7 @@ import ProfileCard from "@/components/elements/profilecard";
 import { authService } from "@/services/api/auth-service";
 import { MetaMaskProvider } from "@metamask/sdk-react";
 import WalletModal from "@/components/ui/modal/WalletModal";
-import { useAppKitState } from "@reown/appkit/react";
+import { useAppKitAccount, useAppKitState } from "@reown/appkit/react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -34,6 +34,7 @@ function Index() {
   const [isLogin, setIsLogin] = useState(false);
   const [showLogin, setShowLogin] = useState<string | null>();
   const { open } = useAppKitState();
+  const { address } = useAppKitAccount();
   const [data, setData] = useState<{
     username: string;
     UserWallet: {
@@ -52,7 +53,7 @@ function Index() {
   const host =
     typeof window !== "undefined"
       ? window.location.host
-      : "http://localhost:5173";
+      : "https://arcanumai.kuncipintu.my.id";
 
   const sdkOptions = {
     logging: { developerMode: false },
@@ -73,6 +74,23 @@ function Index() {
   const isRequiredLogin = params.get("login");
 
   useEffect(() => {
+    if (localStorage.getItem("address")) return;
+    if (address) {
+      userService
+        .updateWallet({ walletId: address })
+        .then(() => {
+          if (!localStorage.getItem("address")) {
+            localStorage.setItem("address", address);
+            window.location.reload();
+          }
+        })
+        .catch((err) => {
+          console.error("❌ Failed to update wallet:", err);
+        });
+    }
+  }, [address]);
+
+  useEffect(() => {
     const userCheck = async () => {
       try {
         const res = await userService.me();
@@ -89,6 +107,17 @@ function Index() {
 
     userCheck();
   }, []);
+
+  useEffect(() => {
+    if (open) {
+      localStorage.setItem("open", "true");
+    } else {
+      if (localStorage.getItem("open") === "true") {
+        localStorage.removeItem("open");
+        window.location.reload();
+      }
+    }
+  }, [open]);
 
   useEffect(() => {
     if (isRequiredLogin) {

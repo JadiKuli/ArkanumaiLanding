@@ -1,3 +1,4 @@
+import { formatAddress } from "@/lib/utils";
 import { userService } from "@/services/api/user-service";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -58,7 +59,7 @@ export default function ProfileCard(props: {
             <h2>
               {props.data.UserWallet.walletId === "default"
                 ? "-"
-                : props.data.UserWallet.walletId}
+                : formatAddress(props.data.UserWallet.walletId)}
             </h2>
           </div>
           <div className="flex justify-between">
