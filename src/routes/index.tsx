@@ -127,106 +127,101 @@ function Index() {
   }, [isRequiredLogin]);
 
   return (
-    <div
-      className={`relative h-screen w-full overflow-hidden transition duration-500 ${theme === "dark" ? "from-night-1 to-night-blue bg-gradient-to-b" : "to-day-5 from-day-white bg-gradient-to-b"} `}
-    >
-      {showGift && dateBirth && <Gift birthDate={dateBirth} />}
-      <MetaMaskProvider debug={false} sdkOptions={sdkOptions}>
+    <MetaMaskProvider debug={false} sdkOptions={sdkOptions}>
+      <div
+        className={`relative h-screen w-full overflow-hidden transition duration-500 ${theme === "dark" ? "from-night-1 to-night-blue bg-gradient-to-b" : "to-day-5 from-day-white bg-gradient-to-b"} `}
+      >
+        {showGift && dateBirth && <Gift birthDate={dateBirth} />}
         {showWallet && (
           <WalletModal onClose={() => setShowWallet(!showWallet)} />
         )}
-      </MetaMaskProvider>
-      <div className="fixed top-6 left-6 z-50 flex gap-2">
-        <Switch
-          id="theme"
-          checked={theme === "dark"}
-          className="hidden"
-          onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
-        />
-        <Label htmlFor="theme">
-          <Icon
-            name={theme === "dark" ? "sun" : "moon"}
-            size={25}
-            className={`${theme === "dark" ? "stroke-white" : "stroke-day-5"}`}
+        <div className="fixed top-6 left-6 z-50 flex gap-2">
+          <Switch
+            id="theme"
+            checked={theme === "dark"}
+            className="hidden"
+            onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
           />
-        </Label>
-      </div>
-      {isLogin ? (
-        <div className="fixed top-6 right-6 flex gap-2">
-          <div className="z-9999999">
-            <div
-              className="grouphover:text-night-1 hover:bg-night-blue hover:border-night-blue flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 text-center font-semibold text-white transition duration-300 hover:text-white"
-              onClick={() => setShowWallet(!showWallet)}
-            >
-              Connect Wallet
-            </div>
-          </div>
-          <div className="z-50" onClick={() => setIsProfile(!isProfile)}>
-            <div className="group hover:text-night-1 hover:bg-night-blue hover:border-night-blue flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 text-center font-semibold text-white transition duration-300 hover:text-white">
-              <span className="group-hover:invisible">
-                Hi! {data?.username}
-              </span>
-              <span className="invisible absolute group-hover:visible">
-                Profile
-              </span>
-            </div>
-          </div>
+          <Label htmlFor="theme">
+            <Icon
+              name={theme === "dark" ? "sun" : "moon"}
+              size={25}
+              className={`${theme === "dark" ? "stroke-white" : "stroke-day-5"}`}
+            />
+          </Label>
         </div>
-      ) : (
-        <div
-          className="hover:text-night-1 fixed top-6 right-6 z-50 flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 font-semibold text-white transition duration-300 hover:bg-white"
-          onClick={() => setShowLogin("login")}
+        {isLogin ? (
+          <div className="fixed top-6 right-6 flex gap-2">
+            <div className="z-50" onClick={() => setIsProfile(!isProfile)}>
+              <div className="group hover:text-night-1 hover:bg-night-blue hover:border-night-blue flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 text-center font-semibold text-white transition duration-300 hover:text-white">
+                <span className="group-hover:invisible">
+                  Hi! {data?.username}
+                </span>
+                <span className="invisible absolute group-hover:visible">
+                  Profile
+                </span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div
+            className="hover:text-night-1 fixed top-6 right-6 z-50 flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 font-semibold text-white transition duration-300 hover:bg-white"
+            onClick={() => setShowLogin("login")}
+          >
+            <IoMdLogIn size={24} />
+            Login User
+          </div>
+        )}
+        {showDateCard && (
+          <div className="fixed inset-0 z-[60] flex h-full w-full items-center justify-center backdrop-blur-sm">
+            <DateCard handleSetDateBirth={handlesetDateBirth} />
+          </div>
+        )}
+        {showLogin && (
+          <div className="fixed inset-0 z-[60] flex h-full w-full items-center justify-center backdrop-blur-sm">
+            {showLogin === "login" ? (
+              <LoginCard
+                onClose={() => setShowLogin(null)}
+                onRegister={() => setShowLogin("register")}
+              />
+            ) : (
+              <RegisterCard
+                onClose={() => setShowLogin(null)}
+                onLogin={() => setShowLogin("login")}
+              />
+            )}
+          </div>
+        )}
+        {isProfile && (
+          <div className="absolute top-20 right-4 z-[60] flex h-[575px] w-92 items-center justify-center rounded-lg border border-[1px] border-slate-200 backdrop-blur-sm">
+            <ProfileCard
+              onLogout={() => {
+                authService.logout();
+                toast.success("Logout Successfully!");
+                setTimeout(() => {
+                  window.location.href = "/";
+                }, 1500);
+              }}
+              onConnectWallet={() => {
+                setShowWallet(!showWallet);
+                setIsProfile(false);
+              }}
+              data={data}
+            />
+          </div>
+        )}
+        <CometBackground />
+        <motion.div
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 2 }}
+          initial={{ opacity: 0 }}
+          className={`${showWallet ? "hidden" : "absolute"} top-1/2 left-1/2 ${open ? "z-0" : "z-10"} flex w-full -translate-x-1/2 -translate-y-1/2 flex-col gap-10 p-8 md:w-2/3 md:-translate-y-2/3 lg:w-1/2 lg:pt-16`}
         >
-          <IoMdLogIn size={24} />
-          Login User
-        </div>
-      )}
-      {showDateCard && (
-        <div className="fixed inset-0 z-[60] flex h-full w-full items-center justify-center backdrop-blur-sm">
-          <DateCard handleSetDateBirth={handlesetDateBirth} />
-        </div>
-      )}
-      {showLogin && (
-        <div className="fixed inset-0 z-[60] flex h-full w-full items-center justify-center backdrop-blur-sm">
-          {showLogin === "login" ? (
-            <LoginCard
-              onClose={() => setShowLogin(null)}
-              onRegister={() => setShowLogin("register")}
-            />
-          ) : (
-            <RegisterCard
-              onClose={() => setShowLogin(null)}
-              onLogin={() => setShowLogin("login")}
-            />
-          )}
-        </div>
-      )}
-      {isProfile && (
-        <div className="absolute top-20 right-4 z-[60] flex h-[525px] w-92 items-center justify-center rounded-lg border border-[1px] border-slate-200 backdrop-blur-sm">
-          <ProfileCard
-            onLogout={() => {
-              authService.logout();
-
-              toast.success("Logout Successfully!");
-              setTimeout(() => {
-                window.location.href = "/";
-              }, 1500);
-            }}
-            data={data}
-          />
-        </div>
-      )}
-      <CometBackground />
-      <motion.div
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 2 }}
-        initial={{ opacity: 0 }}
-        className={`${showWallet ? "hidden" : "absolute"} top-1/2 left-1/2 ${open ? "z-0" : "z-10"} flex w-full -translate-x-1/2 -translate-y-1/2 flex-col gap-10 p-8 md:w-2/3 md:-translate-y-2/3 lg:w-1/2 lg:pt-16`}
-      >
-        <TitleContent theme={theme} />
-        <MainContent />
-      </motion.div>
-      <Background theme={theme} />
-    </div>
+          <TitleContent theme={theme} />
+          <MainContent />
+        </motion.div>
+        <Background theme={theme} />
+      </div>
+    </MetaMaskProvider>
   );
 }

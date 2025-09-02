@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSDK } from "@metamask/sdk-react";
 import {
   useAppKit,
@@ -15,6 +15,14 @@ export function useWallet() {
   const { disconnect: WagmiDisconnect } = useDisconnect();
   const { sdk, connected } = useSDK();
   const { open: ModalOpen, initialized: ModalInitialized } = useAppKitState();
+
+  const [connectedState, setConnectedState] = useState(false);
+  const [isConnectedState, setIsConnectedState] = useState(false);
+
+  useEffect(() => {
+    setConnectedState(!!connected);
+    setIsConnectedState(!!isConnected);
+  }, [connected, isConnected]);
 
   const connect = async () => {
     if (wallet === "metamask") {
@@ -84,8 +92,8 @@ export function useWallet() {
     setWallet,
     connect,
     disconnect,
-    connected,
-    isConnected,
+    connected: connectedState,
+    isConnected: isConnectedState,
   };
 }
 

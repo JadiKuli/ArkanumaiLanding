@@ -30,6 +30,7 @@ export default function WalletModal({ onClose }: { onClose: () => void }) {
     connected,
   } = useWallet();
   const [pendingClose, setPendingClose] = useState(false);
+  const [confirm, setConfirm] = useState(false);
 
   useEffect(() => {
     if (pendingClose && !ModalOpen) {
@@ -118,19 +119,20 @@ export default function WalletModal({ onClose }: { onClose: () => void }) {
           </div>
         )}
         <button
-          className="mt-6 w-full rounded-full bg-pink-600 py-3 hover:opacity-90 disabled:opacity-60"
+          className="mt-6 w-full rounded-full bg-pink-600 py-3 hover:opacity-90 disabled:opacity-60 cursor-pointer"
           onClick={() => {
             if (isConnected) {
-              console.log("Halo")
+              console.log("Halo");
               setWallet("walletconnect");
             } else {
               setWallet("metamask");
             }
+            setConfirm(true);
             disconnect();
           }}
           disabled={ModalOpen}
         >
-          Disconnect
+          {confirm ? "Confirm Disconnect" : "Disconnect"}
         </button>
       </>
     );

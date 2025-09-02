@@ -1,3 +1,5 @@
+" use client";
+import useWallet from "@/hooks/useWallet";
 import { formatAddress } from "@/lib/utils";
 import { userService } from "@/services/api/user-service";
 import { useState } from "react";
@@ -5,6 +7,7 @@ import { toast } from "sonner";
 
 export default function ProfileCard(props: {
   onLogout?: () => void;
+  onConnectWallet?: () => void;
   data?: {
     username: string;
     UserWallet: {
@@ -19,6 +22,8 @@ export default function ProfileCard(props: {
   };
 }) {
   const [wallet, setWallet] = useState(props.data?.UserWallet.walletId);
+  const { isConnected, connected } = useWallet();
+
   const handleUpdate = async () => {
     toast.info("Updating Wallet...");
     try {
@@ -95,6 +100,12 @@ export default function ProfileCard(props: {
           Update Wallet
         </button>
       </div>
+      <button
+        className="bg-night-3 w-full cursor-pointer rounded-md py-2"
+        onClick={props.onConnectWallet}
+      >
+        {isConnected || connected ? "Wallet Connected" : "Connect Wallet"}
+      </button>
       <button
         className="bg-pink w-full cursor-pointer rounded-md py-2"
         onClick={props.onLogout}
