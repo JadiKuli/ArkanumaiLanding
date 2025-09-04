@@ -78,7 +78,7 @@ const MainContent = () => {
           onClick={item.onClick}
         >
           <div
-            className={`flex size-16 items-center justify-center rounded-[10px] border-t-[1px] border-white bg-white/10 shadow-md backdrop-blur-lg`}
+            className={`flex size-14 md:size-16 items-center justify-center rounded-[10px] border-t-[1px] border-white bg-white/10 shadow-md backdrop-blur-lg`}
           >
             <Icon
               name={item.name}

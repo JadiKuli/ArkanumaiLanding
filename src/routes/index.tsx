@@ -49,6 +49,7 @@ function Index() {
   }>();
   const [isProfile, setIsProfile] = useState(false);
   const [showWallet, setShowWallet] = useState(false);
+  const [requireWallet, setRequireWallet] = useState(false);
 
   const host =
     typeof window !== "undefined"
@@ -98,6 +99,10 @@ function Index() {
         if (res.data) {
           setIsLogin(true);
           setData(res.data);
+          if (res.data.UserWallet?.walletId === "default" || "") {
+            toast.error("Please connect wallet first.");
+            setRequireWallet(true);
+          }
         }
       } catch (error) {
         setIsLogin(false);
@@ -135,6 +140,15 @@ function Index() {
         {showWallet && (
           <WalletModal onClose={() => setShowWallet(!showWallet)} />
         )}
+        {requireWallet && (
+          <WalletModal
+            required
+            onClose={() => {}}
+            onContinue={() => {
+              setRequireWallet(false);
+            }}
+          />
+        )}
         <div className="fixed top-6 left-6 z-50 flex gap-2">
           <Switch
             id="theme"
@@ -154,7 +168,7 @@ function Index() {
           <div className="fixed top-6 right-6 flex gap-2">
             <div className="z-50" onClick={() => setIsProfile(!isProfile)}>
               <div className="group hover:text-night-1 hover:bg-night-blue hover:border-night-blue flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 text-center font-semibold text-white transition duration-300 hover:text-white">
-                <span className="group-hover:invisible">
+                <span className="text-sm group-hover:invisible md:text-base">
                   Hi! {data?.username}
                 </span>
                 <span className="invisible absolute group-hover:visible">
@@ -165,10 +179,10 @@ function Index() {
           </div>
         ) : (
           <div
-            className="hover:text-night-1 fixed top-6 right-6 z-50 flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 font-semibold text-white transition duration-300 hover:bg-white"
+            className="hover:text-night-1 fixed top-4 right-4 z-50 flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white px-4 py-2 text-sm font-semibold text-white transition duration-300 hover:bg-white md:text-base"
             onClick={() => setShowLogin("login")}
           >
-            <IoMdLogIn size={24} />
+            <IoMdLogIn className="text-lg md:text-2xl" />
             Login User
           </div>
         )}
@@ -193,7 +207,7 @@ function Index() {
           </div>
         )}
         {isProfile && (
-          <div className="absolute top-20 right-4 z-[60] flex h-[575px] w-92 items-center justify-center rounded-lg border border-[1px] border-slate-200 backdrop-blur-sm">
+          <div className="absolute top-20 right-4 z-[60] flex h-[575px] w-81 items-center justify-center rounded-lg border border-[1px] border-slate-200 backdrop-blur-sm md:w-96">
             <ProfileCard
               onLogout={() => {
                 authService.logout();
@@ -215,7 +229,7 @@ function Index() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 2 }}
           initial={{ opacity: 0 }}
-          className={`${showWallet ? "hidden" : "absolute"} top-1/2 left-1/2 ${open ? "z-0" : "z-10"} flex w-full -translate-x-1/2 -translate-y-1/2 flex-col gap-10 p-8 md:w-2/3 md:-translate-y-2/3 lg:w-1/2 lg:pt-16`}
+          className={`${showWallet ? "hidden" : "absolute"} top-1/2 left-1/2 ${open ? "z-0" : "z-10"} flex w-full -translate-x-1/2 -translate-y-1/2 flex-col gap-10 p-8 md:w-2/3 lg:w-1/2 lg:pt-16`}
         >
           <TitleContent theme={theme} />
           <MainContent />

@@ -19,7 +19,15 @@ const wallets: WalletOption[] = [
   },
 ];
 
-export default function WalletModal({ onClose }: { onClose: () => void }) {
+export default function WalletModal({
+  onContinue = () => {},
+  onClose,
+  required = false,
+}: {
+  onContinue?: () => void;
+  onClose: () => void;
+  required?: boolean;
+}) {
   const {
     setWallet,
     wallet,
@@ -34,10 +42,13 @@ export default function WalletModal({ onClose }: { onClose: () => void }) {
 
   useEffect(() => {
     if (pendingClose && !ModalOpen) {
+      if (required) {
+        onContinue();
+      }
       onClose();
       setPendingClose(false);
     }
-  }, [pendingClose, ModalOpen, onClose]);
+  }, [pendingClose, ModalOpen, onClose, required, onContinue]);
 
   const handleContinue = () => {
     connect();
@@ -119,7 +130,7 @@ export default function WalletModal({ onClose }: { onClose: () => void }) {
           </div>
         )}
         <button
-          className="mt-6 w-full rounded-full bg-pink-600 py-3 hover:opacity-90 disabled:opacity-60 cursor-pointer"
+          className="mt-6 w-full cursor-pointer rounded-full bg-pink-600 py-3 hover:opacity-90 disabled:opacity-60"
           onClick={() => {
             if (isConnected) {
               console.log("Halo");

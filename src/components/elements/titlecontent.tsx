@@ -53,16 +53,16 @@ const TitleContent = ({ theme = "dark" }: { theme: string }) => {
   }, [location.locale]);
 
   return (
-    <div className="flex flex-col items-center gap-3 lg:gap-5">
+    <div className="flex flex-col items-center lg:gap-5">
       <h4
-        className={`font-lexend text-[40px] transition duration-1000 lg:text-5xl ${
+        className={`font-lexend text-[32px] transition duration-1000 lg:text-5xl ${
           theme === "dark" ? "text-white" : "text-day-5"
         }`}
       >
         {time}
       </h4>
       <h1
-        className={`font-viga text-center text-[48px] transition duration-1000 lg:text-7xl ${
+        className={`font-viga text-center text-[40px] transition duration-1000 lg:text-7xl ${
           theme === "dark" ? "text-white" : "text-day-5"
         }`}
       >
