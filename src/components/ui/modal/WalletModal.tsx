@@ -1,11 +1,13 @@
 "use client";
-import { X } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { useEffect, useState } from "react";
 import Modal from "../modal";
+import { useSDK } from "@metamask/sdk-react";
+import { useAppKitAccount, useDisconnect } from "@reown/appkit/react";
+import InputWalletModal from "./InputWalletModal";
 
 interface WalletOption {
-  id: "metamask" | "walletconnect";
+  id: "metamask" | "walletconnect" | "manual";
   name: string;
   icon: string;
 }
@@ -16,6 +18,11 @@ const wallets: WalletOption[] = [
     id: "walletconnect",
     name: "WalletConnect",
     icon: "/icon/walletconnect.png",
+  },
+  {
+    id: "manual",
+    name: "Manual Connect",
+    icon: "/icon/link.png",
   },
 ];
 
@@ -28,18 +35,14 @@ export default function WalletModal({
   onClose: () => void;
   required?: boolean;
 }) {
-  const {
-    setWallet,
-    wallet,
-    connect,
-    ModalOpen,
-    isConnected,
-    disconnect,
-    connected,
-  } = useWallet();
+  const { setWallet, wallet, connect, ModalOpen, disconnect } = useWallet();
   const [pendingClose, setPendingClose] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const { sdk, connected } = useSDK();
+  const { disconnect: WagmiDisconnect } = useDisconnect();
+  const { isConnected } = useAppKitAccount();
 
+  const walletsource = localStorage.getItem("source_wallet");
   useEffect(() => {
     if (pendingClose && !ModalOpen) {
       if (required) {
@@ -50,10 +53,29 @@ export default function WalletModal({
     }
   }, [pendingClose, ModalOpen, onClose, required, onContinue]);
 
+  useEffect(() => {
+    if (!walletsource) {
+      if (isConnected) {
+        console.log("ini kepanggil loh walletconnect");
+        WagmiDisconnect();
+      } else if (connected) {
+        console.log("ini kepanggil loh metamask");
+        sdk?.terminate();
+      }
+
+      console.log("ini kepanggil loh");
+    }
+  }, [isConnected, connected, walletsource]);
+
   const handleContinue = () => {
-    connect();
-    setPendingClose(true);
+    if (wallet === "manual") {
+      setShowManualWallet(true);
+    } else {
+      connect();
+      setPendingClose(true);
+    }
   };
+  const [showManualWallet, setShowManualWallet] = useState(false);
 
   const OptionWallet = () => {
     return (
@@ -113,27 +135,25 @@ export default function WalletModal({
         <h2 className="mb-6 text-center text-lg font-semibold">
           Wallet Connected
         </h2>
-        {isConnected && (
+        {isConnected || walletsource === "walletconnect" ? (
           <div className="flex flex-col items-center">
             <img src="/icon/walletconnect.png" alt="" className="h-24 w-24" />
             <p className="mt-2 text-sm font-semibold">
               Connected with WalletConnect
             </p>
           </div>
-        )}
-        {connected && (
+        ) : connected || walletsource === "metamask" ? (
           <div className="flex flex-col items-center">
             <img src="/icon/metamask.png" alt="" className="h-24 w-24" />
             <p className="mt-2 text-sm font-semibold">
               Connected with Metamask
             </p>
           </div>
-        )}
+        ) : null}
         <button
           className="mt-6 w-full cursor-pointer rounded-full bg-pink-600 py-3 hover:opacity-90 disabled:opacity-60"
           onClick={() => {
             if (isConnected) {
-              console.log("Halo");
               setWallet("walletconnect");
             } else {
               setWallet("metamask");
@@ -155,19 +175,13 @@ export default function WalletModal({
         if (!ModalOpen) onClose();
       }}
     >
-      <div className="relative w-[360px] rounded-xl bg-[#121212] p-6 text-white">
-        <button
-          className="absolute top-4 right-4 text-gray-400 hover:text-white"
-          onClick={() => {
-            if (!ModalOpen) onClose();
-          }}
-          disabled={ModalOpen}
-        >
-          <X size={20} />
-        </button>
-
-        {isConnected || connected ? <WalletConnected /> : <OptionWallet />}
-      </div>
+      {showManualWallet ? (
+        <InputWalletModal onClose={() => setShowManualWallet(false)} />
+      ) : (
+        <div className="relative w-[360px] rounded-xl bg-[#121212] p-6 text-white">
+          {walletsource ? <WalletConnected /> : <OptionWallet />}
+        </div>
+      )}
     </Modal>
   );
 }

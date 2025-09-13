@@ -23,6 +23,7 @@ export default function ProfileCard(props: {
 }) {
   const [wallet, setWallet] = useState(props.data?.UserWallet.walletId);
   const { isConnected, connected } = useWallet();
+  const walletsource = localStorage.getItem("source_wallet");
 
   const handleUpdate = async () => {
     toast.info("Updating Wallet...");
@@ -44,7 +45,7 @@ export default function ProfileCard(props: {
   if (!props.data) return null;
 
   return (
-    <div className="flex h-full w-full flex-col justify-between p-5 text-white">
+    <div className="flex h-full w-full flex-col md:flex-row justify-between p-5 text-white">
       <div className="flex flex-col gap-4">
         <div className="text-center">
           <h2 className="text-lg font-semibold">User Profile</h2>
@@ -82,6 +83,8 @@ export default function ProfileCard(props: {
             </div>
           </div>
         </div>
+      </div>
+      <div className="flex flex-col gap-4">
         <div className="space-y-2">
           <p className="text-sm font-semibold">Set Wallet</p>
           <div className="flex h-10 w-full items-center rounded-md border border-white">
@@ -99,19 +102,21 @@ export default function ProfileCard(props: {
         >
           Update Wallet
         </button>
+        <button
+          className="bg-night-3 w-full cursor-pointer rounded-md py-2"
+          onClick={props.onConnectWallet}
+        >
+          {isConnected || connected || walletsource
+            ? "Disconnect Wallet"
+            : "Connect Wallet"}
+        </button>
+        <button
+          className="bg-pink w-full cursor-pointer rounded-md py-2"
+          onClick={props.onLogout}
+        >
+          Logout
+        </button>
       </div>
-      <button
-        className="bg-night-3 w-full cursor-pointer rounded-md py-2"
-        onClick={props.onConnectWallet}
-      >
-        {isConnected || connected ? "Wallet Connected" : "Connect Wallet"}
-      </button>
-      <button
-        className="bg-pink w-full cursor-pointer rounded-md py-2"
-        onClick={props.onLogout}
-      >
-        Logout
-      </button>
     </div>
   );
 }

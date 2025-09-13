@@ -18,6 +18,7 @@ export function useWallet() {
 
   const [connectedState, setConnectedState] = useState(false);
   const [isConnectedState, setIsConnectedState] = useState(false);
+  const [showManualModal, setShowManualModal] = useState(false);
 
   useEffect(() => {
     setConnectedState(!!connected);
@@ -30,7 +31,7 @@ export function useWallet() {
         const res = await sdk?.connect();
         if (res?.[0]) {
           userService
-            .updateWallet({ walletId: res[0] })
+            .updateWallet({ walletId: res[0], source: "metamask" })
             .then(() => {
               window.location.reload();
             })
@@ -64,6 +65,11 @@ export function useWallet() {
         console.error("WalletConnect connection failed:", error);
       }
     }
+
+    if (wallet === "manual") {
+      setShowManualModal(true);
+      return;
+    }
   };
 
   const disconnect = async () => {
@@ -81,7 +87,7 @@ export function useWallet() {
       console.error("WalletConnect disconnection failed:", error);
     } finally {
       localStorage.removeItem("address");
-      await userService.updateWallet({ walletId: "default" });
+      await userService.updateWallet({ walletId: "", source: "" });
     }
   };
 
@@ -94,6 +100,8 @@ export function useWallet() {
     disconnect,
     connected: connectedState,
     isConnected: isConnectedState,
+    showManualModal,
+    setShowManualModal,
   };
 }
 

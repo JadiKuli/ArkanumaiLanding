@@ -21,6 +21,8 @@ import { authService } from "@/services/api/auth-service";
 import { MetaMaskProvider } from "@metamask/sdk-react";
 import WalletModal from "@/components/ui/modal/WalletModal";
 import { useAppKitAccount, useAppKitState } from "@reown/appkit/react";
+import useWallet from "@/hooks/useWallet";
+import InputWalletModal from "@/components/ui/modal/InputWalletModal";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -35,6 +37,7 @@ function Index() {
   const [showLogin, setShowLogin] = useState<string | null>();
   const { open } = useAppKitState();
   const { address } = useAppKitAccount();
+
   const [data, setData] = useState<{
     username: string;
     UserWallet: {
@@ -50,6 +53,7 @@ function Index() {
   const [isProfile, setIsProfile] = useState(false);
   const [showWallet, setShowWallet] = useState(false);
   const [requireWallet, setRequireWallet] = useState(false);
+  const { showManualModal, setShowManualModal } = useWallet();
 
   const host =
     typeof window !== "undefined"
@@ -78,7 +82,7 @@ function Index() {
     if (localStorage.getItem("address")) return;
     if (address) {
       userService
-        .updateWallet({ walletId: address })
+        .updateWallet({ walletId: address, source: "walletconnect" })
         .then(() => {
           if (!localStorage.getItem("address")) {
             localStorage.setItem("address", address);
@@ -99,13 +103,50 @@ function Index() {
         if (res.data) {
           setIsLogin(true);
           setData(res.data);
-          if (res.data.UserWallet?.walletId === "default" || "") {
+          const address = localStorage.getItem("address");
+
+          if (address) {
+            if (
+              !res.data.UserWallet?.walletId ||
+              !res.data.UserWallet?.source
+            ) {
+              userService
+                .updateWallet({ walletId: address, source: "walletconnect" })
+                .then(() => {
+                  if (!localStorage.getItem("address")) {
+                    localStorage.setItem("address", address);
+                    window.location.reload();
+                  }
+                })
+                .catch((err) => {
+                  console.error("❌ Failed to update wallet:", err);
+                });
+            }
+          }
+
+          if (
+            res.data.UserWallet?.walletId === "default" ||
+            res.data.UserWallet?.walletId === ""
+          ) {
             toast.error("Please connect wallet first.");
             setRequireWallet(true);
           }
+
+          if (!res.data.UserWallet?.source && res.data.UserWallet?.walletId) {
+            userService
+              .updateWallet({ walletId: "", source: "" })
+              .then(() => {
+                toast.info("Please update your wallet.");
+                setRequireWallet(true);
+              })
+              .catch((err) => {
+                console.error("❌ Failed to update wallet:", err);
+              });
+          } else {
+            localStorage.setItem("source_wallet", res.data.UserWallet?.source);
+          }
         }
       } catch (error) {
-        setIsLogin(false);
         console.error(error);
       }
     };
@@ -131,14 +172,24 @@ function Index() {
     }
   }, [isRequiredLogin]);
 
+  console.log("show manual modal: ", showManualModal);
+
   return (
     <MetaMaskProvider debug={false} sdkOptions={sdkOptions}>
       <div
         className={`relative h-screen w-full overflow-hidden transition duration-500 ${theme === "dark" ? "from-night-1 to-night-blue bg-gradient-to-b" : "to-day-5 from-day-white bg-gradient-to-b"} `}
       >
         {showGift && dateBirth && <Gift birthDate={dateBirth} />}
-        {showWallet && (
+        {showWallet && !showManualModal && (
           <WalletModal onClose={() => setShowWallet(!showWallet)} />
+        )}
+        {showManualModal && (
+          <InputWalletModal
+            onClose={() => {
+              setShowWallet(!showWallet);
+              setShowManualModal(false);
+            }}
+          />
         )}
         {requireWallet && (
           <WalletModal
@@ -207,7 +258,7 @@ function Index() {
           </div>
         )}
         {isProfile && (
-          <div className="absolute top-20 right-4 z-[60] flex h-[575px] w-81 items-center justify-center rounded-lg border border-[1px] border-slate-200 backdrop-blur-sm md:w-96">
+          <div className="absolute top-20 right-4 z-[60] flex h-[575px] w-81 items-center justify-center rounded-lg border border-[1px] border-slate-200 backdrop-blur-sm md:h-[370px] md:w-96 md:w-[500px]">
             <ProfileCard
               onLogout={() => {
                 authService.logout();

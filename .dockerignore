@@ -5,3 +5,4 @@ dist
 Dockerfile*
 docker-compose*
 .env
+docker-build.md

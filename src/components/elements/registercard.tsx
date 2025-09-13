@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -45,13 +46,15 @@ export default function RegisterCard(props: Props) {
       if (props.onLogin) {
         props.onLogin();
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof z.ZodError) {
         const errors: Partial<Record<keyof RegisterType, string>> = {};
         error.issues.forEach((issue) => {
           errors[issue.path[0] as keyof RegisterType] = issue.message;
         });
         setErrors(errors);
+      } else if (error.response?.status === 409) {
+        toast.error("Username already taken!");
       } else {
         toast.error("Something went wrong!, Please try again.");
       }
